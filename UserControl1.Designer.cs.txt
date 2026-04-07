@@ -1,0 +1,161 @@
+namespace Opteka
+{
+    partial class UserControl1
+    {
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
+
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        #region Windows Form Designer generated code
+
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
+            this.lblID = new System.Windows.Forms.Label();
+            this.lblStatus = new System.Windows.Forms.Label();
+            this.lblAdress = new System.Windows.Forms.Label();
+            this.lblDate = new System.Windows.Forms.Label();
+            this.cmb1 = new System.Windows.Forms.ComboBox();
+            this.cmb2 = new System.Windows.Forms.ComboBox();
+            this.lblDelivery = new System.Windows.Forms.Label();
+            this.dtp1 = new System.Windows.Forms.DateTimePicker();
+            this.dtp2 = new System.Windows.Forms.DateTimePicker();
+            this.btn1 = new System.Windows.Forms.Button();
+            this.SuspendLayout();
+            // 
+            // lblID
+            // 
+            this.lblID.AutoSize = true;
+            this.lblID.Location = new System.Drawing.Point(97, 44);
+            this.lblID.Name = "lblID";
+            this.lblID.Size = new System.Drawing.Size(121, 13);
+            this.lblID.TabIndex = 0;
+            this.lblID.Text = "Информация о заказе";
+            // 
+            // lblStatus
+            // 
+            this.lblStatus.AutoSize = true;
+            this.lblStatus.Location = new System.Drawing.Point(114, 78);
+            this.lblStatus.Name = "lblStatus";
+            this.lblStatus.Size = new System.Drawing.Size(80, 13);
+            this.lblStatus.TabIndex = 1;
+            this.lblStatus.Text = "Статус заказа";
+            // 
+            // lblAdress
+            // 
+            this.lblAdress.AutoSize = true;
+            this.lblAdress.Location = new System.Drawing.Point(114, 118);
+            this.lblAdress.Name = "lblAdress";
+            this.lblAdress.Size = new System.Drawing.Size(77, 13);
+            this.lblAdress.TabIndex = 2;
+            this.lblAdress.Text = "Пункт выдачи";
+            // 
+            // lblDate
+            // 
+            this.lblDate.AutoSize = true;
+            this.lblDate.Location = new System.Drawing.Point(110, 160);
+            this.lblDate.Name = "lblDate";
+            this.lblDate.Size = new System.Drawing.Size(84, 13);
+            this.lblDate.TabIndex = 3;
+            this.lblDate.Text = "Дата создания";
+            // 
+            // cmb1
+            // 
+            this.cmb1.FormattingEnabled = true;
+            this.cmb1.Location = new System.Drawing.Point(234, 75);
+            this.cmb1.Name = "cmb1";
+            this.cmb1.Size = new System.Drawing.Size(121, 21);
+            this.cmb1.TabIndex = 4;
+            // 
+            // cmb2
+            // 
+            this.cmb2.FormattingEnabled = true;
+            this.cmb2.Location = new System.Drawing.Point(234, 115);
+            this.cmb2.Name = "cmb2";
+            this.cmb2.Size = new System.Drawing.Size(121, 21);
+            this.cmb2.TabIndex = 5;
+            // 
+            // lblDelivery
+            // 
+            this.lblDelivery.AutoSize = true;
+            this.lblDelivery.Location = new System.Drawing.Point(110, 190);
+            this.lblDelivery.Name = "lblDelivery";
+            this.lblDelivery.Size = new System.Drawing.Size(84, 13);
+            this.lblDelivery.TabIndex = 6;
+            this.lblDelivery.Text = "Дата создания";
+            // 
+            // dtp1
+            // 
+            this.dtp1.Location = new System.Drawing.Point(258, 160);
+            this.dtp1.Name = "dtp1";
+            this.dtp1.Size = new System.Drawing.Size(200, 20);
+            this.dtp1.TabIndex = 8;
+            // 
+            // dtp2
+            // 
+            this.dtp2.Location = new System.Drawing.Point(258, 190);
+            this.dtp2.Name = "dtp2";
+            this.dtp2.Size = new System.Drawing.Size(200, 20);
+            this.dtp2.TabIndex = 9;
+            // 
+            // btn1
+            // 
+            this.btn1.Location = new System.Drawing.Point(205, 239);
+            this.btn1.Name = "btn1";
+            this.btn1.Size = new System.Drawing.Size(120, 33);
+            this.btn1.TabIndex = 10;
+            this.btn1.Text = "Сохранить";
+            this.btn1.UseVisualStyleBackColor = true;
+            // 
+            // UserControl1
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.btn1);
+            this.Controls.Add(this.dtp2);
+            this.Controls.Add(this.dtp1);
+            this.Controls.Add(this.lblDelivery);
+            this.Controls.Add(this.cmb2);
+            this.Controls.Add(this.cmb1);
+            this.Controls.Add(this.lblDate);
+            this.Controls.Add(this.lblAdress);
+            this.Controls.Add(this.lblStatus);
+            this.Controls.Add(this.lblID);
+            this.Name = "UserControl1";
+            this.Size = new System.Drawing.Size(663, 527);
+            this.ResumeLayout(false);
+            this.PerformLayout();
+
+        }
+
+        #endregion
+
+        private System.Windows.Forms.Label lblID;
+        private System.Windows.Forms.Label lblStatus;
+        private System.Windows.Forms.Label lblAdress;
+        private System.Windows.Forms.Label lblDate;
+        private System.Windows.Forms.ComboBox cmb1;
+        private System.Windows.Forms.ComboBox cmb2;
+        private System.Windows.Forms.Label lblDelivery;
+        private System.Windows.Forms.DateTimePicker dtp1;
+        private System.Windows.Forms.DateTimePicker dtp2;
+        private System.Windows.Forms.Button btn1;
+    }
+}

@@ -1,0 +1,191 @@
+using Opteka;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Data.SqlClient;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace Opteka
+{
+    public partial class Form2 : Form
+    {
+        private readonly string connectionString =
+            @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=medecina;Integrated Security=True";
+
+        private int _role;
+
+        public Form2(int role, string fio)
+        {
+            InitializeComponent();
+
+            _role = role;
+            labelUser.Text = fio;
+
+            bool isAdmin = (_role == 1);
+            btnAdd.Visible = btnDelete.Visible = btnEdit.Visible = buttonOrder.Visible = isAdmin;
+
+            LoadProducts();
+        }
+
+        public void LoadProducts()
+        {
+            flowLayoutPanel1.Controls.Clear();
+            flowLayoutPanel1.Tag = null;
+
+            var con = new SqlConnection(connectionString);
+
+            try
+            {
+                con.Open();
+
+                string sql = @"SELECT p.*, 
+                                      pr.Name as prN, 
+                                      prov.Name as pvN
+                               FROM Product p
+                               LEFT JOIN Producer pr ON p.ProducerId = pr.Id
+                               LEFT JOIN Provider prov ON p.ProviderId = prov.Id
+                               WHERE p.Name LIKE @search";
+
+                if (cmbSort.SelectedIndex == 1)
+                    sql += " ORDER BY p.Price ASC";
+                else if (cmbSort.SelectedIndex == 2)
+                    sql += " ORDER BY p.Price DESC";
+
+                var cmd = new SqlCommand(sql, con);
+                cmd.Parameters.AddWithValue("@search", $"%{txtSearch.Text}%");
+
+                var r = cmd.ExecuteReader();
+
+                while (r.Read())
+                {
+                    var card = new Producties();
+
+                    card.FillData(
+                        r["Name"]?.ToString() ?? "",
+                        r["Description"]?.ToString() ?? "",
+                        r["prN"]?.ToString() ?? "",
+                        r["pvN"]?.ToString() ?? "",
+                        r["Price"] != DBNull.Value ? Convert.ToDecimal(r["Price"]) : 0,
+                        r["Discount"] != DBNull.Value ? Convert.ToInt32(r["Discount"]) : 0,
+                        "шт.",
+                        r["AmountlnStock"] != DBNull.Value ? Convert.ToInt32(r["AmountlnStock"]) : 0,
+                        r["Photo"]?.ToString()
+                    );
+
+                    card.Tag = r["Id"];
+
+                    card.Click += Card_Click;
+                    foreach (Control c in card.Controls)
+                        c.Click += Card_Click;
+
+                    flowLayoutPanel1.Controls.Add(card);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ошибка загрузки товаров:\n" + ex.Message);
+            }
+        }
+
+        private void Card_Click(object sender, EventArgs e)
+        {
+            Control clicked = sender as Control;
+
+            while (clicked != null && !(clicked is Producties))
+                clicked = clicked.Parent;
+
+            if (clicked == null) return;
+
+            foreach (Control ct in flowLayoutPanel1.Controls)
+                ct.BackColor = Color.White;
+
+            clicked.BackColor = Color.LightGray;
+            flowLayoutPanel1.Tag = clicked.Tag;
+        }
+
+        private void OpenEdit(int? id)
+        {
+            if (Application.OpenForms["Form3"] != null)
+                return;
+
+            Form3 f = new Form3(id);
+
+            if (f.ShowDialog() == DialogResult.OK)
+                LoadProducts();
+        }
+
+        private void btnEdit_Click(object sender, EventArgs e)
+        {
+            if (flowLayoutPanel1.Tag is int id)
+                OpenEdit(id);
+            else
+                MessageBox.Show("Выберите товар.");
+        }
+
+        private void btnAdd_Click(object sender, EventArgs e)
+        {
+            OpenEdit(null);
+        }
+
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            if (!(flowLayoutPanel1.Tag is int id))
+                return;
+
+            if (MessageBox.Show("Удалить товар?", "Удаление",
+                MessageBoxButtons.YesNo) != DialogResult.Yes)
+                return;
+
+            var con = new SqlConnection(connectionString);
+
+            try
+            {
+                con.Open();
+
+                var cmd =
+                    new SqlCommand("DELETE FROM Product WHERE Id = @id", con);
+
+                cmd.Parameters.AddWithValue("@id", id);
+                cmd.ExecuteNonQuery();
+
+                LoadProducts();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ошибка удаления:\n" + ex.Message);
+            }
+        }
+
+        private void txtSearch_TextChanged(object sender, EventArgs e)
+            => LoadProducts();
+
+        private void cmbSort_SelectedIndexChanged(object sender, EventArgs e)
+            => LoadProducts();
+
+        private void btnBack_Click(object sender, EventArgs e)
+        {
+            new Form1().Show();
+            Close();
+        }
+
+        private void flowLayoutPanel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void buttonOrder_Click(object sender, EventArgs e)
+        {
+            new Form4(this._role).Show();
+        }
+
+        private void labelUser_Click(object sender, EventArgs e)
+        {
+
+        }
+    }
+}

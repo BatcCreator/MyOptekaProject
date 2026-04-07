@@ -1,0 +1,69 @@
+using System;
+using System.Drawing;
+using System.Windows.Forms;
+
+namespace Opteka
+{
+    public partial class UserControl1 : UserControl
+    {
+        private readonly Color primaryColor = Color.FromArgb(52, 152, 219);
+        private readonly Color successColor = Color.FromArgb(46, 204, 113);
+        private readonly Color warningColor = Color.FromArgb(241, 196, 15);
+        private readonly Color dangerColor = Color.FromArgb(231, 76, 60);
+
+        public UserControl1()
+        {
+            InitializeComponent();  // ← ДОБАВЬТЕ ЭТУ СТРОКУ
+            SetupDesign();
+        }
+
+        private void SetupDesign()
+        {
+            this.BackColor = Color.White;
+            this.BorderStyle = BorderStyle.FixedSingle;
+            this.Font = new Font("Segoe UI", 9);
+            this.Margin = new Padding(15);
+
+            lblID.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+
+            lblStatus.Padding = new Padding(6, 2, 6, 2);
+            lblStatus.ForeColor = Color.White;
+            lblStatus.AutoSize = true;
+        }
+
+        public void Fill(int id, string status, string address, DateTime date, DateTime delivery)
+        {
+            lblID.Text = $"Заказ № {id}";
+            lblAdress.Text = $"Пункт выдачи: {address}";
+            lblDate.Text = $"Дата заказа: {date:dd.MM.yyyy}";
+            lblDelivery.Text = $"Дата доставки: {delivery:dd.MM.yyyy}";
+
+            ApplyStatusStyle(status);
+        }
+
+        private void ApplyStatusStyle(string status)
+        {
+            lblStatus.Text = status;
+
+            switch (status.ToLower())
+            {
+                case "доставлен":
+                    lblStatus.BackColor = successColor;
+                    break;
+
+                case "в пути":
+                    lblStatus.BackColor = warningColor;
+                    break;
+
+                case "отменен":
+                    lblStatus.BackColor = dangerColor;
+                    break;
+
+                default:
+                    lblStatus.BackColor = primaryColor;
+                    break;
+            }
+        }
+    }
+}
+

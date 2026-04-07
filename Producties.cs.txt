@@ -1,0 +1,131 @@
+using System;
+using System.Drawing;
+using System.IO;
+using System.Windows.Forms;
+
+namespace Opteka
+{
+    public partial class Producties : UserControl
+    {
+        private readonly Color cardColor = Color.White;
+        private readonly Color accentColor = Color.FromArgb(52, 152, 219);
+        private readonly Color discountColor = Color.FromArgb(46, 204, 113);
+
+        public Producties()
+        {
+            InitializeComponent();
+            SetupDesign();
+        }
+
+        private void SetupDesign()
+        {
+            this.BackColor = cardColor;
+            this.BorderStyle = BorderStyle.FixedSingle;
+            this.Font = new Font("Segoe UI", 9);
+
+            lblTitle.Font = new Font("Segoe UI", 11, FontStyle.Bold);
+            lblPrice.Font = new Font("Segoe UI", 11, FontStyle.Bold);
+            lblPrice.ForeColor = accentColor;
+
+            lblOldPrice.ForeColor = Color.Gray;
+            lblOldPrice.Font = new Font("Segoe UI", 9, FontStyle.Strikeout);
+
+            lblDiscount.ForeColor = Color.White;
+            lblDiscount.BackColor = discountColor;
+            lblDiscount.Padding = new Padding(6, 2, 6, 2);
+            lblDiscount.Visible = false;
+
+            pbPhoto.BackColor = Color.WhiteSmoke;
+            pbPhoto.SizeMode = PictureBoxSizeMode.Zoom;
+        }
+
+        public void FillData(
+            string title,
+            string desc,
+            string producer,
+            string provider,
+            decimal price,
+            int discount,
+            string unit,
+            int stock,
+            string photo)
+        {
+            lblTitle.Text = title;
+            lblDesc.Text = desc;
+            lblProducer.Text = $"Производитель: {producer}";
+            lblProvider.Text = $"Поставщик: {provider}";
+            lblUnit.Text = $"Ед. изм.: {unit}";
+            lblStock.Text = $"На складе: {stock}";
+
+            ApplyPrice(price, discount);
+            LoadPhoto(photo);
+            ApplyStockStyle(stock, discount);
+        }
+
+        private void ApplyPrice(decimal price, int discount)
+        {
+            if (discount > 0)
+            {
+                decimal newPrice = Math.Round(price * (100 - discount) / 100, 2);
+
+                lblPrice.Text = $"{newPrice:N2} ₽";
+                lblOldPrice.Text = $"{price:N2} ₽";
+                lblOldPrice.Visible = true;
+
+                lblDiscount.Text = $"-{discount}%";
+                lblDiscount.Visible = true;
+            }
+            else
+            {
+                lblPrice.Text = $"{price:N2} ₽";
+                lblOldPrice.Visible = false;
+                lblDiscount.Visible = false;
+            }
+        }
+
+        private void LoadPhoto(string photo)
+        {
+            try
+            {
+                if (pbPhoto.Image != null)
+                {
+                    pbPhoto.Image.Dispose();
+                    pbPhoto.Image = null;
+                }
+
+                if (string.IsNullOrWhiteSpace(photo))
+                    return;
+
+                string fullPath = Path.Combine(Application.StartupPath, photo);
+
+                if (File.Exists(fullPath))
+                {
+                    using (var imgTemp = Image.FromFile(fullPath))
+                    {
+                        pbPhoto.Image = new Bitmap(imgTemp);
+                    }
+                }
+            }
+            catch
+            {
+                pbPhoto.Image = null;
+            }
+        }
+
+        private void ApplyStockStyle(int stock, int discount)
+        {
+            if (stock == 0)
+            {
+                this.BackColor = Color.FromArgb(235, 245, 255);
+            }
+            else if (discount > 15)
+            {
+                this.BackColor = Color.FromArgb(232, 255, 241);
+            }
+            else
+            {
+                this.BackColor = cardColor;
+            }
+        }
+    }
+}

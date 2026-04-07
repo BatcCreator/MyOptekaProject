@@ -1,0 +1,166 @@
+namespace Opteka
+{
+    partial class Producties
+    {
+        /// <summary> 
+        /// Обязательная переменная конструктора.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
+
+        /// <summary> 
+        /// Освободить все используемые ресурсы.
+        /// </summary>
+        /// <param name="disposing">истинно, если управляемый ресурс должен быть удален; иначе ложно.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        #region Код, автоматически созданный конструктором компонентов
+
+        /// <summary> 
+        /// Требуемый метод для поддержки конструктора — не изменяйте 
+        /// содержимое этого метода с помощью редактора кода.
+        /// </summary>
+        private void InitializeComponent()
+        {
+            this.pbPhoto = new System.Windows.Forms.PictureBox();
+            this.lblTitle = new System.Windows.Forms.Label();
+            this.lblDesc = new System.Windows.Forms.Label();
+            this.lblProducer = new System.Windows.Forms.Label();
+            this.lblProvider = new System.Windows.Forms.Label();
+            this.lblPrice = new System.Windows.Forms.Label();
+            this.lblDiscount = new System.Windows.Forms.Label();
+            this.lblUnit = new System.Windows.Forms.Label();
+            this.lblStock = new System.Windows.Forms.Label();
+            this.lblOldPrice = new System.Windows.Forms.Label();
+            ((System.ComponentModel.ISupportInitialize)(this.pbPhoto)).BeginInit();
+            this.SuspendLayout();
+            // 
+            // pbPhoto
+            // 
+            this.pbPhoto.Location = new System.Drawing.Point(24, 58);
+            this.pbPhoto.Name = "pbPhoto";
+            this.pbPhoto.Size = new System.Drawing.Size(298, 248);
+            this.pbPhoto.TabIndex = 0;
+            this.pbPhoto.TabStop = false;
+            // 
+            // lblTitle
+            // 
+            this.lblTitle.AutoSize = true;
+            this.lblTitle.Location = new System.Drawing.Point(353, 58);
+            this.lblTitle.Name = "lblTitle";
+            this.lblTitle.Size = new System.Drawing.Size(83, 13);
+            this.lblTitle.TabIndex = 1;
+            this.lblTitle.Text = "Наименование";
+            // 
+            // lblDesc
+            // 
+            this.lblDesc.AutoSize = true;
+            this.lblDesc.Location = new System.Drawing.Point(353, 83);
+            this.lblDesc.Name = "lblDesc";
+            this.lblDesc.Size = new System.Drawing.Size(57, 13);
+            this.lblDesc.TabIndex = 2;
+            this.lblDesc.Text = "Описание";
+            // 
+            // lblProducer
+            // 
+            this.lblProducer.AutoSize = true;
+            this.lblProducer.Location = new System.Drawing.Point(353, 107);
+            this.lblProducer.Name = "lblProducer";
+            this.lblProducer.Size = new System.Drawing.Size(86, 13);
+            this.lblProducer.TabIndex = 3;
+            this.lblProducer.Text = "Проивзодитель";
+            // 
+            // lblProvider
+            // 
+            this.lblProvider.AutoSize = true;
+            this.lblProvider.Location = new System.Drawing.Point(353, 130);
+            this.lblProvider.Name = "lblProvider";
+            this.lblProvider.Size = new System.Drawing.Size(65, 13);
+            this.lblProvider.TabIndex = 4;
+            this.lblProvider.Text = "Поставщик";
+            // 
+            // lblPrice
+            // 
+            this.lblPrice.AutoSize = true;
+            this.lblPrice.Location = new System.Drawing.Point(654, 157);
+            this.lblPrice.Name = "lblPrice";
+            this.lblPrice.Size = new System.Drawing.Size(33, 13);
+            this.lblPrice.TabIndex = 5;
+            this.lblPrice.Text = "Цена";
+            // 
+            // lblDiscount
+            // 
+            this.lblDiscount.AutoSize = true;
+            this.lblDiscount.Location = new System.Drawing.Point(692, 83);
+            this.lblDiscount.Name = "lblDiscount";
+            this.lblDiscount.Size = new System.Drawing.Size(44, 13);
+            this.lblDiscount.TabIndex = 6;
+            this.lblDiscount.Text = "Скидка";
+            // 
+            // lblUnit
+            // 
+            this.lblUnit.AutoSize = true;
+            this.lblUnit.Location = new System.Drawing.Point(353, 188);
+            this.lblUnit.Name = "lblUnit";
+            this.lblUnit.Size = new System.Drawing.Size(48, 13);
+            this.lblUnit.TabIndex = 7;
+            this.lblUnit.Text = "ед. изм.";
+            // 
+            // lblStock
+            // 
+            this.lblStock.AutoSize = true;
+            this.lblStock.Location = new System.Drawing.Point(353, 216);
+            this.lblStock.Name = "lblStock";
+            this.lblStock.Size = new System.Drawing.Size(60, 13);
+            this.lblStock.TabIndex = 8;
+            this.lblStock.Text = "На складе";
+            // 
+            // lblOldPrice
+            // 
+            this.lblOldPrice.AutoSize = true;
+            this.lblOldPrice.Location = new System.Drawing.Point(353, 157);
+            this.lblOldPrice.Name = "lblOldPrice";
+            this.lblOldPrice.Size = new System.Drawing.Size(70, 13);
+            this.lblOldPrice.TabIndex = 9;
+            this.lblOldPrice.Text = "Старая цена";
+            // 
+            // Producties
+            // 
+            this.Controls.Add(this.lblOldPrice);
+            this.Controls.Add(this.lblStock);
+            this.Controls.Add(this.lblUnit);
+            this.Controls.Add(this.lblDiscount);
+            this.Controls.Add(this.lblPrice);
+            this.Controls.Add(this.lblProvider);
+            this.Controls.Add(this.lblProducer);
+            this.Controls.Add(this.lblDesc);
+            this.Controls.Add(this.lblTitle);
+            this.Controls.Add(this.pbPhoto);
+            this.Name = "Producties";
+            this.Size = new System.Drawing.Size(799, 390);
+            ((System.ComponentModel.ISupportInitialize)(this.pbPhoto)).EndInit();
+            this.ResumeLayout(false);
+            this.PerformLayout();
+
+        }
+
+        #endregion
+
+        private System.Windows.Forms.PictureBox pbPhoto;
+        private System.Windows.Forms.Label lblTitle;
+        private System.Windows.Forms.Label lblDesc;
+        private System.Windows.Forms.Label lblProducer;
+        private System.Windows.Forms.Label lblProvider;
+        private System.Windows.Forms.Label lblPrice;
+        private System.Windows.Forms.Label lblDiscount;
+        private System.Windows.Forms.Label lblUnit;
+        private System.Windows.Forms.Label lblStock;
+        private System.Windows.Forms.Label lblOldPrice;
+    }
+}

@@ -1,0 +1,103 @@
+using Opteka;
+using System;
+using System.Data.SqlClient;
+using System.Windows.Forms;
+
+namespace Opteka 
+{
+    public partial class Form4 : Form
+    {
+        private readonly string connectionString =
+            @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=medecina;Integrated Security=True";
+
+        private readonly int? _role;
+
+        public Form4(int? role)
+        {
+            InitializeComponent();
+            _role = role;
+            LoadOrders();
+        }
+
+        public void LoadOrders()
+        {
+            flowLayoutPanel1.Controls.Clear(); // ВАЖНО
+
+            var conn = new SqlConnection(connectionString);
+
+            try
+            {
+                conn.Open();
+
+                string sql = @"SELECT o.Id,
+                                      os.Name as StatusName,
+                                      ISNULL(LTRIM(RTRIM(p.City)), '') + ', ' + 
+                                      ISNULL(LTRIM(RTRIM(p.Street)), '') as FullAddr,
+                                      o.CreateDate,
+                                      o.DelvereDate
+                               FROM [Order] o
+                               JOIN OrderStatus os ON o.OrderStatusId = os.Id
+                               JOIN PickUpPoint p ON o.PickUpPoint = p.Id
+                               ORDER BY o.CreateDate DESC";
+
+                var cmd = new SqlCommand(sql, conn);
+                var r = cmd.ExecuteReader();
+
+                while (r.Read())
+                {
+                    int id = (int)r["Id"];
+                    string status = r["StatusName"].ToString();
+                    string address = r["FullAddr"].ToString();
+
+                    DateTime creation =
+                        r["CreateDate"] != DBNull.Value
+                        ? (DateTime)r["CreateDate"]
+                        : DateTime.MinValue;
+
+                    DateTime delivery =
+                        r["DelvereDate"] != DBNull.Value
+                        ? (DateTime)r["DelvereDate"]
+                        : DateTime.MinValue;
+
+                    UserControl1 card = new UserControl1();
+                    card.Fill(id, status, address, creation, delivery);
+                    card.Tag = id;
+
+                    if (_role == 1)
+                        AttachClickRecursive(card);
+
+                    flowLayoutPanel1.Controls.Add(card);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ошибка загрузки заказов:\n" + ex.Message);
+            }
+        }
+
+        private void AttachClickRecursive(Control parent)
+        {
+            parent.Click += (s, e) =>
+            {
+                if (parent.Tag is int orderId)
+                    OpenEdit(orderId);
+            };
+
+            foreach (Control child in parent.Controls)
+                AttachClickRecursive(child);
+        }
+
+        private void OpenEdit(int? orderId)
+        {
+            Form4 f5 = new Form4(orderId);
+
+            if (f5.ShowDialog() == DialogResult.OK)
+                LoadOrders();
+        }
+
+        private void buttonAdd_Click(object sender, EventArgs e)
+        {
+            OpenEdit(null);
+        }
+    }
+}
