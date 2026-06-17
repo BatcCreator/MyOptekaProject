@@ -1,62 +1,64 @@
-using System;
+using System; 
 using System.Data.SqlClient;
-using System.Windows.Forms;
-namespace Opteka
+using System.Linq.Expressions;
+using System.Security.Cryptography.X509Certificates;
+using System.Threading.Tasks.Dataflow;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+
+namespace WinFormsApp1
 {
     public partial class Form1 : Form
     {
-        string connectionString = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=medecina;Integrated Security=True;TrustServerCertificate=True";
+        string connect = "Data Source=(localdb)\\MSSQLLocalDB;database=1var;Integrated Security=True;TrustServerCertificate=True;";
         public Form1()
         {
             InitializeComponent();
         }
         private void button1_Click(object sender, EventArgs e)
         {
+            string log = textBox1.Text;
+            string pass = textBox2.Text;
 
-            if (textBox1.Text == "" || textBox2.Text == "")
+            if (log == "" || pass == "")  
             {
-                MessageBox.Show("Неверные данные пользователя");
+                MessageBox.Show("Значения пустые", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
             try
             {
-                using (SqlConnection con = new SqlConnection(connectionString))
+                using (SqlConnection con = new(connect))
                 {
                     con.Open();
-                    string sql = "SELECT RoleId, Surname, Name, Patronmic FROM [User] " +
-                "WHERE Login=@log AND Password=@pass";
-                    SqlCommand cmd = new SqlCommand(sql, con);
-                    cmd.Parameters.AddWithValue("@log", textBox1.Text);
-                    cmd.Parameters.AddWithValue("@pass", textBox2.Text);
-                    SqlDataReader reader = cmd.ExecuteReader();
-                    if (reader.Read())
+                    string sql = "SELECT * FROM [User] WHERE login=@log AND password=@pass";
+                    SqlCommand cd = new(sql, con);
+                    cd.Parameters.AddWithValue("@log", log);
+                    cd.Parameters.AddWithValue("@pass", pass);
+                    SqlDataReader read = cd.ExecuteReader();
+
+                    if (read.Read())
                     {
-                        int roleId = Convert.ToInt32(reader["RoleId"]);
-                        string fio =
-                        reader["Surname"].ToString() + " " +
-                        reader["Name"].ToString() + " " +
-                        reader["Patronmic"].ToString();
-                        MessageBox.Show("Добро пожаловать!");
-                        Form2 f = new Form2(roleId, fio);
-                        f.Show();
+                        int roleID = read.GetInt32(1);
+                        string FIO = $"{read.GetString(2)} {read.GetString(3)} {read.GetString(4)}";
+                        MessageBox.Show("Вы успешно зашли", "Ура", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        new Form2(roleID, FIO).Show();
                         this.Hide();
                     }
                     else
                     {
-                        MessageBox.Show("Íåâåðíûé ëîãèí èëè ïàðîëü");
+                        MessageBox.Show("Пароль или логин не верны", "NO", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception xxx)
             {
-                MessageBox.Show("Îøèáêà ïîäêëþ÷åíèÿ: " + ex.Message);
+                MessageBox.Show("Ошибка подключения к БД", xxx.Message);
             }
         }
         private void button2_Click(object sender, EventArgs e)
         {
-            Form2 f = new Form2(3, "Гость");
-            f.Show();
-            this.Hide(); // Ñêðûâàåì îêíî àâòîðèçàöèè
+            new Form2(3, "gost").Show();
+            this.Hide();
         }
     }
 }
