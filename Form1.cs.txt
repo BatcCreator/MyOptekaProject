@@ -1,14 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+1 ФОРМА
 using System.Data.SqlClient;
-namespace PROBA2
+namespace PROBA3
 {
     public partial class Form1 : Form
     {
@@ -18,7 +10,6 @@ namespace PROBA2
         {
             InitializeComponent();
         }
-
         private void button1_Click(object sender, EventArgs e)
         {
             string login = textBox1.Text;
@@ -32,97 +23,82 @@ namespace PROBA2
             SqlDataReader read = comand.ExecuteReader();
             if (login == "" || password == "")
             {
-                MessageBox.Show("Пустые поля", "поля не заполнены", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("ПУСТО", "ПУСТО", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
             else
             {
                 if (read.Read())
                 {
+                    MessageBox.Show("Правильынй пароль", "добро пожаловать", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     role = Convert.ToInt32(read["roleid"]);
-                    
-                    
-                    MessageBox.Show("Добро пожаловать", "Пароль правильный", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    Form2 f = new Form2(role);
-                    f.Show();
+
+                    Form2 form = new Form2(role);
+                    form.Show();
                     this.Hide();
-
-
                 }
                 else
                 {
-                    MessageBox.Show("НЕ Добро пожаловать", "Не Пароль правильный", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
+                    MessageBox.Show("Неправильынй пароль", "не добро пожаловать", MessageBoxButtons.OK, MessageBoxIcon.Error);  
                 }
             }
-
-
-
         }
-
         private void button2_Click(object sender, EventArgs e)
         {
-            Form2 f1 = new Form2(role);
-            f1.Show();
+            Form2 form = new Form2(role);
+            form.Show();
             this.Hide();
         }
     }
 }
-// Form 2
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
+ФОРМА 2
 using System.Data.SqlClient;
-using System.Drawing;
-using System.Linq;
-using System.Reflection.Emit;
-using System.Runtime.Remoting.Contexts;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-
-namespace PROBA2
+namespace PROBA3
 {
     public partial class Form2 : Form
     {
         public string connect = "Data Source=(localdb)\\MSSQLLocalDB; database = DEMOO2 ;Integrated Security=True;TrustServerCertificate=True";
-
         public Form2(int role)
         {
             InitializeComponent();
-            
-            // Показываем роль
             if (role == 1)
+            {
                 label1.Text = "Администратор";
+                button1.Visible = true; button2.Visible = true; button3.Visible = true; button4.Visible = true; button5.Visible = true;      
+            }
             else if (role == 2)
-                label1.Text = "Менеджер";
+            {
+                label1.Text = "менеджер";
+                button1.Visible = true; button2.Visible = true; button3.Visible = true; button4.Visible = false; button5.Visible = false;             
+            }
             else if (role == 3)
-                label1.Text = "Клиент";
-            else
-                label1.Text = "Роль не определена";
-
-            // Загружаем таблицу в DataGridView
-            LoadTable();
+            {
+                label1.Text = "клиент";
+                button1.Visible = true; button2.Visible = true; button3.Visible = false; button4.Visible = false; button5.Visible = false;                
+            }
+            else if (role == 0)
+            {
+                label1.Text = "режим гостя";
+                button1.Visible = true; button2.Visible = false; button3.Visible = false; button4.Visible = false; button5.Visible = false;         
+            }
+            Loadtable();
         }
-
-        private void LoadTable()
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Form1 form = new Form1();
+            form.Show();
+            this.Hide();
+        }
+        public void Loadtable()
         {
             SqlConnection con = new SqlConnection(connect);
             con.Open();
-
-            string zapros = "SELECT * FROM users";
+            string zapros = "SELECT * FROM users ";
             SqlDataAdapter adapter = new SqlDataAdapter(zapros, con);
-            DataTable dt = new DataTable();
-            adapter.Fill(dt);
-
-            dataGridView1.DataSource = dt; 
-
+            DataTable table = new DataTable();
+            adapter.Fill(table);
+            dataGridView1.DataSource = table;
             con.Close();
         }
-
-        
-
-      
     }
 }
